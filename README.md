@@ -19,3 +19,12 @@ Now, I've added support for macOS, and I've improved window resizing greatly.
 Open the Releases tab, and download the latest build for your device.
 
 BirdPad is portable, but on macOS you can always drag it to your Applications folder.
+
+# Building from source
+To build BirdPad from source, first install the latest version of Python 3. BirdPad is built on Python 3.12, so we recommend using 3.12 for the best experience.
+
+Then, download a buildkit from the Releases tab. The buildkit will work on either Windows or macOS as long as Python is in your PATH (`python` for Windows, `python3` for macOS).
+
+To build from source, extract the buildkit and run your operating system's respective build script (`build-birdpad.bat` for Windows, `build-birdpad.sh` for macOS).
+
+The build script will install/update all required modules (`pyinstaller`, `tkmacosx`, and `pillow`) and produce an executable file in the `dist` folder.
