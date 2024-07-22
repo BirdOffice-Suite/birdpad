@@ -3,4 +3,4 @@ If you write a new function, add a comment at the beginning of the function with
 
 NEVER push code to the main branch. Always push it to the beta branch (see `BETA.MD` for more info).
 
-That way, your contributions won't cause rampant bugs that breach production and cause problems (see [#3](https://github.com/PPPDUD/birdpad/issues/3) for an example of a rampant bug)
+That way, your contributions won't cause rampant bugs that breach production and cause problems (see [#3](https://github.com/PPPDUD/birdpad/issues/3) for an example of a rampant bug) and can be reviewed before the next version.
