@@ -7,8 +7,9 @@ from tkinter.ttk import Style
 from tkinter import scrolledtext
 from tkmacosx import Button
 from sys import argv
-import sys
+import sys, webbrowser
 
+#sys.argv.append("--macos")
 logging = False
 
 logs = []
@@ -113,6 +114,12 @@ def resource_path(relative_path):
 
     return os.path.join(base_path, relative_path)
 
+def get_updates():
+    logs.append(f"Ask if app should check for updates.")
+    answer = askyesno(title='Check for updates', message='Open browser to find updates?')
+    if answer:
+        webbrowser.open_new_tab("https://github.com/PPPDUD/birdpad/releases")
+
     
 #print(os.listdir())
 
@@ -127,32 +134,21 @@ window.wm_iconphoto(False, photo)
 text_box = scrolledtext.ScrolledText(wrap="none", relief="sunken")
 text_box.pack(expand=True, fill='both')
 
-
-
-
-
-#save = tk.Button(window, text="Save", command=save_file)
-#save.pack(side=tk.LEFT)
-
-
-
-
-
-if platform.system() == "Darwin":
+if platform.system() == "Darwin" or "--macos" in sys.argv:
     saveas = Button(window, text="Save", command=saveas_file)
     load = Button(window, text="Load", command=load_file)
     quit_birdpad = Button(window, text="Quit", bg='red', command=quit_bpad, borderless=0)
-    #birdpad_credits = Button(window, text="Credits", bg='orange', command=quit_bpad, borderless=0)
+    birdpad_credits = Button(window, text="Get updates!", bg='orange', command=quit_bpad, borderless=0)
 
 else:
     saveas = tk.Button(window, text="Save", command=saveas_file)
     load = tk.Button(window, text="Load", command=load_file)
     quit_birdpad = tk.Button(window, text="Quit", bg='red', command=quit_bpad)
-    #birdpad_credits = tk.Button(window, text="Credits", bg='orange', command=quit_bpad)
+    birdpad_credits = tk.Button(window, text="Get updates!", bg='orange', command=get_updates)
     
 saveas.pack(side=tk.LEFT, expand=True, fill='both')
 quit_birdpad.pack(side=tk.RIGHT,  expand=True, fill='both')
-#birdpad_credits.pack(side=tk.RIGHT,  expand=True, fill='both')
+birdpad_credits.pack(side=tk.RIGHT,  expand=True, fill='both')
 load.pack(side=tk.LEFT, expand=True, fill='both')
 
 
@@ -162,7 +158,7 @@ text_box.insert(tk.END, '''Thanks for installing BirdPad v1.4!
 
 This release is under beta testing and not viable for usage by consumers.''')
 
-if len(argv) > 1 and not argv[1] == "--log":
+if len(argv) > 1 and not argv[1] == "--log" and not argv[1] == "--macos":
     load_file(argv[1])
 
 if "--log" in argv:
