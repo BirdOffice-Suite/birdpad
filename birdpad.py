@@ -7,7 +7,7 @@ from tkinter.ttk import Style
 from tkinter import scrolledtext
 from tkmacosx import Button
 from sys import argv
-
+import sys
 
 logging = False
 
@@ -118,7 +118,7 @@ def resource_path(relative_path):
 
 window = tk.Tk()
 
-window.title('BirdPad v1.2')
+window.title('BirdPad v1.4')
 window.geometry("700x700")
 
 photo = tk.PhotoImage(file = resource_path('birdpad.png'))
@@ -158,9 +158,9 @@ load.pack(side=tk.LEFT, expand=True, fill='both')
 
 #window.resizable(False, False)
 
-text_box.insert(tk.END, '''Thanks for installing BirdPad v1.3!
+text_box.insert(tk.END, '''Thanks for installing BirdPad v1.4!
 
-BREAKING: BirdPad is moving back to the Unlicense! See Github for more info!''')
+This release is under beta testing and not viable for usage by consumers.''')
 
 if len(argv) > 1 and not argv[1] == "--log":
     load_file(argv[1])
