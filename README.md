@@ -5,7 +5,7 @@ I created this project while on the search for a text editor that felt native to
 
 WordPad and Notepad served very well for a while, but with Windows 11, WordPad was deprecated and Notepad started looking like a generic web app, so I had to continue looking.
 
-Then, I rememebered BirdPad, an old hobby project I'd made privately a few months prior.
+Then, I remembered BirdPad, an old hobby project I'd made privately a few months prior.
 
 I improved the UI and added functionality, and BirdPad as we know it today was born.
 
