@@ -1,15 +1,25 @@
-import tkinter.filedialog
-import platform
-import os
-import string
+import tkinter.filedialog, platform, os, string, math
 from tkinter.messagebox import askyesno, showerror, showinfo
-from tkinter.ttk import Style
 from tkinter import scrolledtext
 from tkmacosx import Button
 from sys import argv
 import sys, webbrowser
 from spellchecker import SpellChecker
 import tkinter as tk
+from requests import get, ConnectionError
+
+# START DONATION CODE
+#from tkinter import messagebox
+#from random import randint
+#import sys
+
+
+#if randint(0,3) == 1 and not "--no-popup" in sys.argv:
+    #showinfo("BirdOffice 24.11", "Thank you for downloading BirdPad! If you like this software, make sure to donate at www.mojavesoft.net/donate/!")
+
+
+# END DONATION CODE
+
 
 # Initialize logging
 logging = False
@@ -17,7 +27,7 @@ logs = []
 
 # Initialize the spell checker
 spell = SpellChecker()
-custom_words = ["BirdPad", "Australorp", "BirdBrush", "BirdOffice", "BirdMenu", "BirdPad", "Brahma"]  # Programmatic list of custom words
+custom_words = ["BirdPad", "Australorp", "BirdBrush", "BirdOffice", "BirdMenu", "BirdPad", "Brahma", "mojavesoft", "mojaveland"]  # Programmatic list of custom words
 
 # Function to strip punctuation
 def strip_punctuation(word):
@@ -116,7 +126,42 @@ def check_spelling(event=None):
             text_box.tag_add("misspelled", start_idx, end_idx)
 
 # Autocorrect function
+updated = False
+
 def autocorrect():
+    global updated
+
+    if not updated:
+        answer = askyesno('BirdPad', "It looks like you're using autocorrect. Would you like to download the extended dictionary via the Internet?")
+
+    else:
+        answer = False
+        
+    if answer:
+         try:
+            global custom_words
+            print("[DEBUG] Updating spellcheck from API...")
+
+            ypages = get("https://mojavesoft.net/api/v1/birdpad/ypages.txt").text.split("\n")
+
+            for i in ypages:
+                custom_words.extend(get(i).text.split("\n"))
+            #custom_words = list(set(custom_words))
+            showinfo("BirdPad", f"Downloaded extended dictionary! ({math.floor(len(custom_words)/1000)}k entries)")
+
+         except ConnectionError:
+            showerror("BirdPad", "mojavesoft.net is not available. Try again in a couple hours.")
+
+            
+         except Exception as e:
+            showerror("BirdPad", e)
+            print(e)
+
+         updated = True
+         print("[DEBUG] Spellcheck update complete")
+
+    
+        
     text_content = text_box.get("1.0", tk.END)
     corrected_text = []
     
@@ -150,6 +195,7 @@ def autocorrect():
     text_box.delete("1.0", tk.END)
     text_box.insert("1.0", "".join(corrected_text))
     check_spelling()  # Recheck spelling after correction
+    showinfo("BirdPad", "Spellcheck complete.")
 
 # Theme change function
 def toggle_theme():
@@ -214,8 +260,7 @@ autocorrect_button.pack(side=tk.LEFT, fill='both', expand=True)
 quit_birdpad.pack(side=tk.RIGHT, fill='both', expand=True)
 
 # Initial text
-text_box.insert(tk.END, '''Thanks for installing BirdPad 24.11 Barred Brahma!
-Want dark mode? Press the "Toggle Theme" button!''')
+text_box.insert(tk.END, '''Thanks for installing BirdPad 24.11 Barred Brahma!''')
 
 if len(argv) > 1 and not argv[1] == "--log" and not argv[1] == "--macos":
     load_file(argv[1])
@@ -229,7 +274,7 @@ apply_theme()
 
 # Button to toggle theme
 
-theme_button.pack(side=tk.LEFT, fill='both', expand=True)
+#theme_button.pack(side=tk.LEFT, fill='both', expand=True)
 
 window.mainloop()
 
